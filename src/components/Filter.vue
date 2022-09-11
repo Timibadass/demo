@@ -65,6 +65,8 @@
       },
     },
     methods: {
+      // TO DO
+      // add mouseleave event to hide filter or add button to dismiss filter options
       ...mapActions(["getGlasses", "storeFilterOptions"]),
       async filterGlasses(filterValue, queryType) {
         let queryParam = "";
