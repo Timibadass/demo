@@ -3,7 +3,7 @@
     <div class="filter__div">
       <button
         class="filter__button filter__button--mobile"
-        @click="currentOption = 'Colours'"
+        @click="setCurrentOption('Colours')"
       >
         Colour
       </button>
@@ -12,20 +12,21 @@
       </h1>
       <button
         class="filter__button filter__button--mobile"
-        @click="currentOption = 'Shape'"
+        @click="setCurrentOption('Shape')"
       >
         Shape
       </button>
       <div class="filter-buttons__div">
-        <button class="filter__button" @click="currentOption = 'Shape'">
+        <button class="filter__button" @click="setCurrentOption('Shape')">
           Shape
         </button>
-        <button class="filter__button" @click="currentOption = 'Colours'">
+        <button class="filter__button" @click="setCurrentOption('Colours')">
           Colour
         </button>
       </div>
       <FilterOptions
-        v-if="options"
+        @close-filter="showOptions = false"
+        v-if="showOptions && options"
         :options="options"
         @filter-values="filterGlasses"
         :name="currentOption"
@@ -44,10 +45,16 @@
         colours: ["black", "tortoise", "coloured", "crystal", "dark", "bright"],
         shapes: ["square", "rectangle", "round", "cat-eye"],
         currentOption: "",
+        showOptions: false,
       };
     },
     components: {
       FilterOptions,
+    },
+    watch: {
+      currentOption() {
+        this.showOptions = true;
+      },
     },
     computed: {
       ...mapGetters(["collection"]),
@@ -65,8 +72,6 @@
       },
     },
     methods: {
-      // TO DO
-      // add mouseleave event to hide filter or add button to dismiss filter options
       ...mapActions(["getGlasses", "storeFilterOptions"]),
       async filterGlasses(filterValue, queryType) {
         let queryParam = "";
@@ -92,6 +97,10 @@
         } catch (error) {
           console.log(error);
         }
+      },
+      setCurrentOption(option) {
+        this.showOptions = true;
+        this.currentOption = option;
       },
     },
   };

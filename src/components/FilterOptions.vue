@@ -19,6 +19,13 @@
         :value="option"
       />
     </label>
+    <button class="filter-close__button" @click="$emit('close-filter')">
+      <img
+        class="filter-close__image"
+        src="@/assets/images/close-dark.svg"
+        alt=""
+      />
+    </button>
   </div>
 </template>
 
@@ -63,7 +70,7 @@
   };
 </script>
 
-<style>
+<style scoped>
   .filter-options__div {
     position: absolute;
     transform: translateY(calc(100% - 25px));
@@ -72,6 +79,7 @@
     border-bottom: 1px solid #000;
     display: flex;
     flex-wrap: wrap;
+    align-items: center;
     gap: 8px;
     background-color: #fff;
     height: max-content;
@@ -93,9 +101,33 @@
     border: 0;
     background-color: transparent;
   }
+  .filter-close__button {
+    width: 30px;
+    background-color: transparent;
+    border: 0;
+    height: 30px;
+    border-radius: 4px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+  }
+  .filter-close__image {
+    width: 15px;
+    height: 15px;
+  }
   @media (min-width: 500px) {
     .filter-options__div {
+      min-height: 100px;
+      transform: translateY(76px);
+      padding: 0 16px;
+      box-sizing: border-box;
+    }
+  }
+  @media (min-width: 768px) {
+    .filter-options__div {
       transform: translateY(51px);
+      min-height: min-content;
+      justify-content: flex-end;
     }
   }
 </style>
