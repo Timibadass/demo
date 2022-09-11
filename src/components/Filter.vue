@@ -111,6 +111,7 @@
     border-bottom: 1px solid #000;
     height: 50px;
     position: sticky;
+    z-index: 1;
     top: 41px;
   }
 
