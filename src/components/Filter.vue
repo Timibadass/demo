@@ -1,27 +1,36 @@
 <template>
   <section class="filter">
-    <button
-      class="filter__button filter__button--mobile"
-      @click="currentOption = 'Colours'"
-    >
-      Colour
-    </button>
-    <h1 class="filter__heading">
-      {{ collection?.name || "Spectacles Women" }}
-    </h1>
-    <button
-      class="filter__button filter__button--mobile"
-      @click="currentOption = 'Shape'"
-    >
-      Shape
-    </button>
-    <div class="filter-buttons__div"></div>
-    <FilterOptions
-      v-if="options"
-      :options="options"
-      @filter-values="filterGlasses"
-      :name="currentOption"
-    />
+    <div class="filter__div">
+      <button
+        class="filter__button filter__button--mobile"
+        @click="currentOption = 'Colours'"
+      >
+        Colour
+      </button>
+      <h1 class="filter__heading">
+        {{ collection?.name || "Spectacles Women" }}
+      </h1>
+      <button
+        class="filter__button filter__button--mobile"
+        @click="currentOption = 'Shape'"
+      >
+        Shape
+      </button>
+      <div class="filter-buttons__div">
+        <button class="filter__button" @click="currentOption = 'Shape'">
+          Shape
+        </button>
+        <button class="filter__button" @click="currentOption = 'Colours'">
+          Colour
+        </button>
+      </div>
+      <FilterOptions
+        v-if="options"
+        :options="options"
+        @filter-values="filterGlasses"
+        :name="currentOption"
+      />
+    </div>
   </section>
 </template>
 
@@ -89,25 +98,29 @@
   .filter {
     border-bottom: 1px solid #000;
     height: 50px;
+    position: sticky;
+    top: 41px;
+  }
+
+  .filter__div {
+    position: relative;
     display: flex;
     align-items: center;
+    background-color: #fff;
     flex-wrap: wrap;
-    position: relative;
+    height: 100%;
   }
 
   .filter__heading {
     font-family: "Source Serif Pro", serif;
     margin: auto;
-    font-weight: 600;
+    font-weight: 900;
     text-transform: uppercase;
     color: #000;
   }
 
   .filter-buttons__div {
-    border-left: 1px solid #000;
-    height: 100%;
-    display: flex;
-    align-items: center;
+    display: none;
   }
 
   .filter__button {
@@ -127,5 +140,62 @@
 
   .filter__button--mobile:nth-of-type(2) {
     border-right: 0;
+  }
+  @media (min-width: 500px) {
+    .filter {
+      top: 61px;
+    }
+  }
+  @media (min-width: 768px) {
+    .filter__heading {
+      font-size: 26px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .filter__heading {
+      margin-left: auto;
+      margin-right: 0;
+      flex-basis: calc((100% / 2) - 3);
+      flex-grow: 1;
+      border-right: 1px solid #000;
+      border-left: 1px solid #000;
+      height: 100%;
+      font-size: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .filter-buttons__div {
+      border-right: 1px solid #000;
+      /* flex-grow: 1; */
+      display: flex;
+      flex-basis: calc((100% / 2) - 3);
+      align-items: center;
+      margin-right: auto;
+      height: 100%;
+    }
+
+    .filter__button {
+      border-right: 1px solid #000;
+      width: 100px;
+      height: 100%;
+    }
+
+    .filter__button--mobile {
+      display: none;
+    }
+
+    .filter__button:nth-of-type(1) {
+      border-left: 0;
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .filter-buttons__div,
+    .filter__heading {
+      flex-basis: 30%;
+    }
   }
 </style>

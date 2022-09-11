@@ -1,62 +1,64 @@
 <template>
   <header class="header" @mouseleave="showNav = false">
-    <div class="header__div">
-      <button
-        class="header__button"
-        :class="{ 'header__button--active': showNav }"
-        @mouseover="showNav = true"
-      >
-        <span
-          class="header-button__text header-button__text--mobile"
-          @click="showNav = !showNav"
-          >{{ showNav ? "x" : "Menu" }}</span
+    <section class="header__section">
+      <div class="header__div">
+        <button
+          class="header__button"
+          :class="{ 'header__button--active': showNav }"
+          @mouseover="showNav = true"
         >
-        <span class="header-button__text header-button__text--tab">Menu</span>
-      </button>
-      <h1 class="header__heading">bloobloom</h1>
-    </div>
-    <nav
-      class="nav"
-      ref="nav"
-      :class="{ 'nav--visible': showNav }"
-      @mouseleave="showNav = false"
-    >
-      <div
-        class="nav__div"
-        :class="{ 'nav__div--active': subMenu === 'Spectacles' }"
-        @click="showSubMenu('Spectacles')"
-        @mouseover="showSubMenu('Spectacles')"
-      >
-        <p class="nav__text">Spectacles</p>
-      </div>
-      <div
-        class="nav__div"
-        :class="{ 'nav__div--active': subMenu === 'Sunglasses' }"
-        @mouseover="showSubMenu('Sunglasses')"
-        @click="showSubMenu('Sunglasses')"
-      >
-        <p class="nav__text">Sunglasses</p>
-      </div>
-      <div class="nav__div" @mouseover="showSubMenu('')">
-        <p class="nav__text">Home try on</p>
-      </div>
-      <div class="nav__div" @mouseover="showSubMenu('')">
-        <p class="nav__text">pair for pair</p>
+          <span
+            class="header-button__text header-button__text--mobile"
+            @click="showNav = !showNav"
+            >{{ showNav ? "x" : "Menu" }}</span
+          >
+          <span class="header-button__text header-button__text--tab">Menu</span>
+        </button>
+        <h1 class="header__heading">bloobloom</h1>
       </div>
       <nav
-        class="nav-submenu__nav"
-        :class="{ 'nav-submenu__nav--visible': subMenu }"
+        class="nav"
+        ref="nav"
+        :class="{ 'nav--visible': showNav }"
+        @mouseleave="showNav = false"
       >
         <div
           class="nav__div"
-          v-for="menu in currentSubMenu"
-          :key="menu.id"
-          @click="fetchCollectionGlasses(menu.configuration_name, menu)"
+          :class="{ 'nav__div--active': subMenu === 'Spectacles' }"
+          @click="showSubMenu('Spectacles')"
+          @mouseover="showSubMenu('Spectacles')"
         >
-          <p class="nav__text">{{ menu.title }}</p>
+          <p class="nav__text">Spectacles</p>
         </div>
+        <div
+          class="nav__div"
+          :class="{ 'nav__div--active': subMenu === 'Sunglasses' }"
+          @mouseover="showSubMenu('Sunglasses')"
+          @click="showSubMenu('Sunglasses')"
+        >
+          <p class="nav__text">Sunglasses</p>
+        </div>
+        <div class="nav__div" @mouseover="showSubMenu('')">
+          <p class="nav__text">Home try on</p>
+        </div>
+        <div class="nav__div" @mouseover="showSubMenu('')">
+          <p class="nav__text">pair for pair</p>
+        </div>
+        <nav
+          class="nav-submenu__nav"
+          :class="{ 'nav-submenu__nav--visible': subMenu }"
+        >
+          <div
+            class="nav__div"
+            v-for="menu in currentSubMenu"
+            :key="menu.id"
+            @click="setCollectionInfo(menu)"
+          >
+            <p class="nav__text">{{ menu.title }}</p>
+          </div>
+        </nav>
       </nav>
-    </nav>
+    </section>
   </header>
 </template>
 
@@ -113,38 +115,15 @@
         }
       },
     },
-    created() {
-      this.fetchCollections();
-      const currentCollection = this.collection;
-      if (currentCollection) {
-        this.fetchCollectionGlasses(currentCollection.configuration_name);
-      } else {
-        this.fetchCollectionGlasses("spectacles-women");
-      }
-    },
     methods: {
       ...mapActions(["getCollections", "getGlasses", "storeCollectionInfo"]),
-      async fetchCollections() {
-        try {
-          await this.getCollections();
-        } catch (error) {
-          console.log(error);
-        }
-      },
       showSubMenu(type) {
         this.subMenu = type;
       },
-      async fetchCollectionGlasses(configName, collection) {
-        if (collection) {
-          this.storeCollectionInfo(collection);
-        }
+      setCollectionInfo(collection) {
+        this.storeCollectionInfo(collection);
         this.showSubMenu("");
         this.showNav = false;
-        try {
-          await this.getGlasses({ collection: configName });
-        } catch (error) {
-          console.log(error);
-        }
       },
     },
   };
@@ -154,6 +133,14 @@
   .header {
     border-bottom: 1px solid #000;
     height: 40px;
+    background-color: #fff;
+    width: 100vw;
+    position: sticky;
+    top: 0;
+    z-index: 2;
+  }
+
+  .header__section {
     position: relative;
   }
 
@@ -194,13 +181,13 @@
 
   .nav,
   .nav-submenu__nav {
-    min-height: calc(100vh - 41px);
+    min-height: calc(100vh - 42px);
     width: 100vw;
     transition: all 500ms ease-in-out;
     transform: translateX(-100%);
     position: absolute;
     border-right: 1px solid #000;
-    z-index: 1;
+    z-index: 2;
     top: 41px;
     background-color: #fff;
     border-top: 0;
@@ -220,7 +207,8 @@
     cursor: pointer;
   }
 
-  .nav__div--active {
+  .nav__div--active,
+  .nav__div:hover {
     background-color: #000;
     color: #fff;
   }
@@ -241,7 +229,8 @@
   }
 
   @media (min-width: 500px) {
-    .header {
+    .header,
+    .header__div {
       height: 60px;
     }
 
@@ -268,15 +257,19 @@
     .nav,
     .nav-submenu__nav {
       max-width: 250px;
-      min-height: calc(100vh - 60px);
+      min-height: calc(100vh - 61px);
     }
 
     .nav {
-      top: 60px;
+      top: 61px;
     }
 
     .nav-submenu__nav--visible {
       transform: translateX(251px);
+    }
+
+    .nav__div {
+      height: 60px;
     }
   }
 </style>
