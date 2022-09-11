@@ -50,7 +50,7 @@
     computed: {
       ...mapGetters(["filterOptions"]),
     },
-    mounted() {
+    created() {
       this.populateFilter();
     },
     methods: {
@@ -93,13 +93,9 @@
     border: 0;
     background-color: transparent;
   }
-
-  .filter-option__checkbox {
-    /* display: none; */
-  }
   @media (min-width: 500px) {
     .filter-options__div {
-      transform: translateY(50px);
+      transform: translateY(51px);
     }
   }
 </style>

@@ -80,6 +80,7 @@
             });
             break;
         }
+        this.$emit("reset-page");
         try {
           await this.getGlasses({
             collection: this.collection.configuration_name,
@@ -154,22 +155,27 @@
 
   @media (min-width: 1024px) {
     .filter__heading {
-      margin-left: auto;
-      margin-right: 0;
-      flex-basis: calc((100% / 2) - 3);
-      flex-grow: 1;
+      width: 100%;
+      /* flex-basis: calc((100% / 2) - 3); */
       border-right: 1px solid #000;
       border-left: 1px solid #000;
       height: 100%;
       font-size: 32px;
+      grid-column-start: 2;
       display: flex;
       align-items: center;
       justify-content: center;
     }
 
+    .filter__div {
+      display: grid;
+      grid-template-columns: 33.33% 33.33% 33.33%;
+      justify-items: center;
+      align-items: flex-start;
+    }
+
     .filter-buttons__div {
       border-right: 1px solid #000;
-      /* flex-grow: 1; */
       display: flex;
       flex-basis: calc((100% / 2) - 3);
       align-items: center;
