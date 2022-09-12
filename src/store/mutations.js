@@ -7,8 +7,9 @@ export const SET_COLLECTION = (state, collection) => {
 export const SET_GLASSES = (state, glasses) => {
     state.glasses = glasses;
 };
-export const SET_FILTER_OPTIONS = (state, filterOptions) => {
-    state.filterOptions = filterOptions;
+export const SET_FILTER_OPTIONS = (state, { filterValue, queryParam }) => {
+    state.filterOptions = filterValue;
+    state.queryParam = queryParam;
 };
 
 export const SET_PAGE = (state, page) => {

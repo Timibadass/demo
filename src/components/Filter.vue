@@ -93,7 +93,7 @@
             collection: this.collection.configuration_name,
             queryParam,
           });
-          this.storeFilterOptions(filterValue);
+          this.storeFilterOptions({ filterValue, queryParam });
         } catch (error) {
           console.log(error);
         }
@@ -168,7 +168,6 @@
   @media (min-width: 1024px) {
     .filter__heading {
       width: 100%;
-      /* flex-basis: calc((100% / 2) - 3); */
       border-right: 1px solid #000;
       border-left: 1px solid #000;
       height: 100%;
@@ -187,9 +186,7 @@
     }
 
     .filter-buttons__div {
-      border-right: 1px solid #000;
       display: flex;
-      flex-basis: calc((100% / 2) - 3);
       align-items: center;
       margin-right: auto;
       height: 100%;
@@ -207,13 +204,6 @@
 
     .filter__button:nth-of-type(1) {
       border-left: 0;
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .filter-buttons__div,
-    .filter__heading {
-      flex-basis: 30%;
     }
   }
 </style>
