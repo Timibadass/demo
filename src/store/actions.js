@@ -12,10 +12,9 @@ export const getCollections = async({ commit }) => {
     }
 };
 export const getGlasses = async({ commit, dispatch, state }, { collection, queryParam }) => {
+    const finalQueryParam = queryParam ? queryParam : state.queryParam;
     const paginatedQueryParam =
-        queryParam +
-        `&page[limit]=12&page[number]=${state.page}` +
-        state.queryParam;
+        finalQueryParam + `&page[limit]=12&page[number]=${state.page}`;
     try {
         const response = await api.fetchCollection(collection, paginatedQueryParam);
         const { data } = response;
@@ -32,7 +31,8 @@ export const getGlasses = async({ commit, dispatch, state }, { collection, query
 };
 
 export const changePage = ({ commit, state }, page) => {
-    commit("SET_PAGE", page ? page : state.page + 1);
+    const pageNumber = page ? page : state.page + 1;
+    commit("SET_PAGE", pageNumber);
 };
 
 export const storeFilterOptions = ({ commit }, { filterValue, queryParam }) => {
