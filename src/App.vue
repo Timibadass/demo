@@ -3,13 +3,18 @@
     <Nav @collection-click="getCollectionByConfig" @reset-page="resetPage" />
     <section>
       <FilterComponent @reset-page="resetPage" />
-      <section class="glass__section">
-        <GlassView
-          v-for="glass in glassesArray"
-          :key="glass.id + glass.name"
-          :glass="glass"
-        />
-      </section>
+      <template v-if="glassesArray && glassesArray.length > 0">
+        <section class="glass__section">
+          <GlassView
+            v-for="glass in glassesArray"
+            :key="glass.id + glass.name"
+            :glass="glass"
+          />
+        </section>
+      </template>
+      <h1 class="glass__heading" v-else>
+        No result found, please try a different filter!
+      </h1>
       <div class="loader__div">
         <img
           v-if="showLoader"
@@ -130,6 +135,14 @@
   .glass__section {
     display: flex;
     flex-wrap: wrap;
+  }
+  .glass__heading {
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    color: #000;
+    margin-top: 30px;
+    width: 100%;
   }
   .loader__image {
     display: block;
