@@ -122,6 +122,7 @@
       },
       setCollectionInfo(collection) {
         this.storeCollectionInfo(collection);
+        this.$emit("reset-page");
         this.showSubMenu("");
         this.showNav = false;
       },
