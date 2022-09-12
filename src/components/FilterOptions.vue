@@ -51,7 +51,11 @@
     watch: {
       selected(val) {
         if (val !== this.filterOptions) {
-          this.$emit("filter-values", val, this.name);
+          const allSelected = val;
+          const correctSelected = allSelected.filter((value) => {
+            return this.options.includes(value);
+          });
+          this.$emit("filter-values", correctSelected, this.name);
         }
       },
       queryParams: "populateFilter",
@@ -93,6 +97,7 @@
     align-items: center;
     justify-content: center;
     padding: 8px;
+    position: relative;
   }
 
   .filter-option__label--active {
@@ -117,6 +122,13 @@
     width: 15px;
     height: 15px;
   }
+
+  .filter-option__checkbox {
+    opacity: 0;
+    position: absolute;
+    width: 100%;
+  }
+
   @media (min-width: 500px) {
     .filter-options__div {
       min-height: 100px;
