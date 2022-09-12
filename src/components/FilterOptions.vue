@@ -50,7 +50,9 @@
     },
     watch: {
       selected(val) {
-        this.$emit("filter-values", val, this.name);
+        if (val !== this.filterOptions) {
+          this.$emit("filter-values", val, this.name);
+        }
       },
       queryParams: "populateFilter",
     },

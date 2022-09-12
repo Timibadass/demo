@@ -88,12 +88,13 @@
             break;
         }
         this.$emit("reset-page");
+        this.storeFilterOptions({ filterValue, queryParam });
         try {
           await this.getGlasses({
-            collection: this.collection.configuration_name,
+            collection:
+              this.collection?.configuration_name || "spectacles-women",
             queryParam,
           });
-          this.storeFilterOptions({ filterValue, queryParam });
         } catch (error) {
           console.log(error);
         }
