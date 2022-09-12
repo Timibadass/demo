@@ -1,10 +1,14 @@
 <template>
   <div id="app">
-    <Nav @collection-click="getCollectionByConfig" />
+    <Nav @collection-click="getCollectionByConfig" @reset-page="resetPage" />
     <section>
       <FilterComponent @reset-page="resetPage" />
       <section class="glass__section">
-        <GlassView v-for="glass in glasses" :key="glass.id" :glass="glass" />
+        <GlassView
+          v-for="glass in glassesArray"
+          :key="glass.id + glass.name"
+          :glass="glass"
+        />
       </section>
       <div class="loader__div">
         <img
@@ -35,6 +39,7 @@
         },
         observer: null,
         showLoader: true,
+        glassesArray: [],
       };
     },
     components: {
@@ -43,20 +48,23 @@
       GlassView,
     },
     created() {
+      this.resetPage();
       this.fetchCollections();
-      const currentCollection = this.collection;
-      if (currentCollection) {
-        this.getCollectionByConfig(currentCollection.configuration_name);
-      } else {
-        this.getCollectionByConfig("spectacles-women");
-      }
+      this.getCollectionByConfig();
     },
     computed: {
       ...mapGetters(["glasses", "collection", "totalPages", "page"]),
     },
     watch: {
       collection: "getCollectionByConfig",
-      glasses: "setObserver",
+      glasses(val) {
+        if (this.page !== 1) {
+          this.glassesArray.push(...val);
+        } else {
+          this.glassesArray = val;
+        }
+        this.setObserver();
+      },
     },
     methods: {
       ...mapActions(["getCollections", "getGlasses", "changePage"]),
@@ -68,7 +76,8 @@
         }
       },
       async getCollectionByConfig() {
-        const configName = this.collection.configuration_name;
+        const configName =
+          this.collection?.configuration_name || "spectacles-women";
         try {
           await this.getGlasses({ collection: configName });
         } catch (error) {
@@ -76,6 +85,7 @@
         }
       },
       resetPage() {
+        this.showLoader = true;
         this.changePage(1);
       },
       callback(entries) {
@@ -83,6 +93,7 @@
           if (entry.intersectionRatio > 0) {
             if (this.totalPages >= this.page + 1) {
               this.changePage();
+              this.getCollectionByConfig();
             } else {
               this.showLoader = false;
             }
