@@ -127,6 +127,7 @@
     opacity: 0;
     position: absolute;
     width: 100%;
+    cursor: pointer;
   }
 
   @media (min-width: 500px) {
